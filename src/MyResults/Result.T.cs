@@ -1,18 +1,12 @@
 namespace MyResults;
 
-public class Result<T>
+public class Result<T>(T? data = default, List<Error>? errors = null)
 {
-    public List<Error> Errors { get; protected set; }
+    public List<Error> Errors { get; protected set; } = errors ?? [];
 
-    public T? Data { get; protected set; }
+    public T? Data { get; protected set; } = data;
 
-    public bool Succeeded => Errors.Count == 0;
-
-    public Result(T? data = default, List<Error>? errors = null)
-    {
-        Errors = errors ?? [];
-        Data = data;
-    }
+    public bool IsValid => Errors.Count == 0;
 
     public static Result<T> Success(T data)
     {
@@ -30,5 +24,6 @@ public class Result<T>
     }
 
     public static implicit operator Result<T>(Error error) => new(errors: [ error ]);
+    public static implicit operator Result<T>(List<Error> errors) => new(errors: errors);
     public static implicit operator Result<T>(T data) => new(data);
 }

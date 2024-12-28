@@ -4,7 +4,12 @@ public class Result
 {
     public List<Error> Errors { get; protected set; }
 
-    public bool Succeeded => Errors.Count == 0;
+    public bool IsValid => Errors.Count == 0;
+
+    public Result()
+    {
+        Errors = [];
+    }
 
     public Result(List<Error>? errors = null)
     {
@@ -33,3 +38,4 @@ public class Result
 
     public static implicit operator Result(Error error) => new([ error ]);
 }
+
